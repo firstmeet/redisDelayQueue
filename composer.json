@@ -6,7 +6,7 @@
     "require": {
         "php": "8.1"
     },
-    "license": "Apache",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Firstmeet\\RedisDelayQueue\\": "src/"
