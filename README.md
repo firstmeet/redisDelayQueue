@@ -2,6 +2,7 @@
 laravel redis delay queue
 
 本包使用redis 完成laravel 延迟队列
+使用redis lua脚本保证原子性
 
 安装方法:
 composer require firstmeet/redis-delay-queue
