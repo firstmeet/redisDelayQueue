@@ -1,6 +1,6 @@
 <?php
 
-namespace Song\RedisDelayQueue;
+namespace Firstmeet\RedisDelayQueue;
 
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\Facades\Artisan;

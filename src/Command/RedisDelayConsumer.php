@@ -1,6 +1,6 @@
 <?php
 
-namespace Song\RedisDelayQueue\Command;
+namespace Firstmeet\RedisDelayQueue\Command;
 
 use App\Services\RedisDelayQueue;
 

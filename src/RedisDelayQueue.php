@@ -1,6 +1,6 @@
 <?php
 
-namespace Song\RedisDelayQueue;
+namespace Firstmeet\RedisDelayQueue;
 use Carbon\Carbon;
 use Illuminate\Config\Repository;
 use Illuminate\Foundation\Application;

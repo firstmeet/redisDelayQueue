@@ -1,6 +1,6 @@
 <?php
 
-namespace Song\RedisDelayQueue\Facades;
+namespace Firstmeet\RedisDelayQueue\Facades;
 
 class RedisDelayQueueFacade extends \Illuminate\Support\Facades\Facade
 {
