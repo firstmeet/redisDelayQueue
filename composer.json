@@ -1,5 +1,5 @@
 {
-    "name": "song/redis-delay-queue",
+    "name": "firstmeet/redis-delay-queue",
     "description": "laravel redis delay queue",
     "type": "1",
     "require": {
@@ -8,7 +8,7 @@
     "license": "Apache",
     "autoload": {
         "psr-4": {
-            "Song\\RedisDelayQueue\\": "src/"
+            "Firstmeet\\RedisDelayQueue\\": "src/"
         }
     },
     "authors": [
