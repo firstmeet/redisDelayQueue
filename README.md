@@ -6,7 +6,10 @@ laravel redis delay queue
 安装方法:
 composer require firstmeet/redis-delay-queue
 
+
+
 安装完成之后执行:
+php artian config:clear
 php artisan vendor:publish --provider "Firstmeet\RedisDelayQueue\RedisDelayQueueProvider"
 
 监听队列的命令:
