@@ -1,0 +1,21 @@
+{
+    "name": "song/redis-delay-queue",
+    "description": "laravel redis delay queue",
+    "type": "1",
+    "require": {
+        "php": "8.1"
+    },
+    "license": "Apache",
+    "autoload": {
+        "psr-4": {
+            "Song\\RedisDelayQueue\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Joshua",
+            "email": "871609160@qq.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
