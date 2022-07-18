@@ -24,3 +24,8 @@ app('redisDelayQueue')->addQueue(function(){
 
 加入队列的方法 addQueue
 第一个参数是匿名函数,第二个参数是延迟多少秒,如果是0，就是立即执行
+
+使用Facade:
+\Firstmeet\RedisDelayQueue\Facades\RedisDelayQueueFacade::addQueue(function (){
+        echo 1;
+    },10);
