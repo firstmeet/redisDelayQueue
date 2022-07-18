@@ -9,8 +9,9 @@ composer require firstmeet/redis-delay-queue
 
 
 安装完成之后执行:
+将  Firstmeet\RedisDelayQueue\RedisDelayQueueProvider 添加到config/app.php中
 php artian config:clear
-php artisan vendor:publish --provider "Firstmeet\RedisDelayQueue\RedisDelayQueueProvider"
+php artisan vendor:publish 然乎选择  Firstmeet\RedisDelayQueue\RedisDelayQueueProvider
 
 监听队列的命令:
 php artisan redis-delay
