@@ -1,6 +1,7 @@
 {
     "name": "firstmeet/redis-delay-queue",
     "description": "laravel redis delay queue",
+    "version":"1.0"
     "type": "1",
     "require": {
         "php": "8.1"
