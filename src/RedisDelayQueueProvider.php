@@ -31,7 +31,7 @@ class RedisDelayQueueProvider extends ServiceProvider implements DeferrableProvi
         $this->publishes([__DIR__.'/config/delay.php'=>config_path('delay.php')]);
         $app=$this->app;
         Artisan::command('redis-delay',function ()use ($app){
-            $queue=new RedisDelayQueue($app);
+            $queue=new RedisDelayQueue();
             $queue->Consumer();
 
         });

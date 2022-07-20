@@ -12,13 +12,17 @@ class RedisDelayQueue
     public int $delay = 0;
     public string $redis_delay_key = "redis_delay";
     public string $redis_delay_map="redis_delay_map";
-    public string $redis_reverse_key;
+    public string $redis_reverse_key="redis_reverse";
+    public string $redis_retry="redis_retry";
+    public int $retry=0;
 
-    public function __construct(Application $app)
+    public function __construct()
     {
         $this->redis_delay_key=app('config')->get('delay.redis_delay_key');
         $this->redis_reverse_key=app('config')->get('delay.redis_reverse_key');
         $this->redis_delay_map=app('config')->get('delay.redis_delay_map');
+        $this->redis_retry=app('config')->get('delay.redis_retry');
+        $this->retry=app('config')->get('delay.retry');
     }
 
     public function addQueue(\Closure $queue, int $delay=0): void
@@ -38,7 +42,7 @@ LUA,2,$this->redis_delay_map,$this->redis_delay_key,$uuid,$push_queue,Carbon::no
     public function Consumer():void
     {
 
-        while (true){
+        while (true) {
             $result = Redis::eval(<<<'LUA'
     local result=redis.call('zrangebyscore',KEYS[1],'-inf',ARGV[1],'limit',0,1)
     if result[1] then
@@ -49,45 +53,26 @@ LUA,2,$this->redis_delay_map,$this->redis_delay_key,$uuid,$push_queue,Carbon::no
        return result[1]
     end
     return false
-LUA, 3, $this->redis_delay_key,$this->redis_reverse_key,$this->redis_delay_map,Carbon::now()->timestamp);
-            if ($result){
-                echo $result." start\n";
-                $lpop = Redis::lpop($this->redis_reverse_key);
-                $result_queue=json_decode($lpop);
-                $fn=unserialize($result_queue)->getClosure();
+LUA, 3, $this->redis_delay_key, $this->redis_reverse_key, $this->redis_delay_map, Carbon::now()->timestamp);
+
+            $lpop = Redis::lpop($this->redis_reverse_key);
+            if ($lpop) {
+                $result_queue = json_decode($lpop);
+                $fn = unserialize($result_queue)->getClosure();
                 try {
                     $fn();
-                    echo $result." finished\n";
+                    echo $result . " finished\n";
 //                    $re=Redis::eval(<<<'LUA'
 //              redis.call('hdel',KEYS[1],ARGV[1])
 //              return 1
 //LUA,1,$this->redis_delay_map,$result);
 //                    Log::info('re',[$re]);
-                }catch (\Exception $exception){
-                    Log::info('queue exception',[$exception->getMessage()]);
-                    $this->failed($result,$lpop);
+                } catch (\Exception $exception) {
+                    Log::info('queue exception', [$exception->getMessage()]);
                 }
-
-            }else{
+            } else {
                 sleep(1);
             }
-//           $zrange=Redis::zrangebyscore($queue->redis_delay_key,'-inf',Carbon::now()->timestamp,['limit'=>[0,1]]);
-//           if (!empty($zrange)){
-//               $current_queue=$zrange[0];
-//               Redis::zrem($queue->redis_delay_key,$current_queue);
-//               $result=json_decode($current_queue);
-//               $fn=unserialize($result)->getClosure();
-//               $fn();
-//           }
         }
-
-    }
-    public function failed($uuid,$push_queue,$delay=0):void
-    {
-        Redis::eval(<<<'LUA'
-        redis.call('hmset',KEYS[1],ARGV[1],ARGV[2])
-        redis.call('zadd',KEYS[2],ARGV[3],ARGV[1])
-LUA,2,$this->redis_delay_map,$this->redis_delay_key,$uuid,$push_queue,Carbon::now()->addSeconds($delay)->timestamp);
-    }
 
 }
